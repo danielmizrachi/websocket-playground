@@ -6,50 +6,32 @@ function App() {
     <div className="app">
       
       <header>
-        <h1>WebSocket Playground</h1>
+        <h1 className="title">WebSocket Playground</h1>
       </header>
 
       <main>
-        <div id="server-address">
-          <label htmlFor="server-address-input">Server address: </label>
+        <div className="container">
           <select>
             <option value="ws">ws://</option>
             <option value="wss">wss://</option>
           </select>
           <input
-            id="server-address-input"
-            placeholder="Enter the WebSocket server address to connect to..."
+            className="server-address"
+            placeholder="Enter a WebSocket server address..."
           />
+          <button className="server-connect">Connect</button>
         </div>
 
-        <div id="data-container">
+        <div className="container">
           <textarea
-            id="data-incoming"
+            className="data-view"
             placeholder="Incoming data will appear here..."
             readOnly
           />
           <textarea
-            id="data-outgoing"
+            className="data-view"
             placeholder="Enter data to be sent..."
           />
-
-          <br />
-
-          <input
-            type="radio"
-            id="data-type-json"
-            name="data-type"
-            value="json"
-            checked
-          />
-          <label htmlFor="data-type-json">JSON</label>
-          <input
-            type="radio"
-            id="data-type-plaintext"
-            name="data-type"
-            value="plaintext"
-          />
-          <label htmlFor="data-type-plaintext">Plaintext</label>
         </div>
       </main>
 
