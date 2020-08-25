@@ -11,10 +11,13 @@
   padding: 0 25vw;
   margin: 30px 0;
 }
-.server-address {
+.url-input {
   margin: 0 30px;
   width: 20vw;
   min-width: 300px;
+}
+.connect {
+  margin-right: 5px;
 }
 
 .data-view {
