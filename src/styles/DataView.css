@@ -1,0 +1,13 @@
+.data-view-container {
+  display: flex;
+  justify-content: space-around;
+}
+.textarea-container {
+  width: 45%;
+}
+.textarea {
+  width: 100%;
+  min-width: 250px;
+  height: 70vh;
+  min-height: 500px;
+}
