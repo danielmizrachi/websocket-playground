@@ -11,8 +11,8 @@ type Props = {
 function ServerUrl(props: Props) {
   const { socketState, onConnect, onCancelClose } = props
 
-  const [ protocol, setProtocol ] = useState('ws')
-  const [ host, setHost ] = useState('')
+  const [ protocol, setProtocol ] = useState('wss')
+  const [ host, setHost ] = useState('echo.websocket.org')
 
   const canConnect = host.length > 0 && socketState === WebSocket.CLOSED
 
@@ -31,13 +31,13 @@ function ServerUrl(props: Props) {
   }
 
   return (
-    <>
+    <div className="url-container">
       <select
         value={protocol}
         onChange={handleProtocolChange}
       >
-        <option value="ws">ws://</option>
         <option value="wss">wss://</option>
+        <option value="ws">ws://</option>
       </select>
 
       <input
@@ -59,7 +59,7 @@ function ServerUrl(props: Props) {
         onClick={() => onCancelClose()}
         disabled={socketState === WebSocket.CLOSED}
       >{socketState === WebSocket.OPEN ? 'Close' : 'Cancel'}</button>
-    </>
+    </div>
   )
 }
 

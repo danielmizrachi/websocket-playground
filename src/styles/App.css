@@ -1,9 +1,6 @@
-.app {
-  text-align: center;
-}
-
 .title {
   font-size: 2.5em;
+  text-align: center;
 }
 .container {
   width: 100%;

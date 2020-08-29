@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import ReactJson from 'react-json-view'
 
 import '../styles/DataView.css'
 
@@ -14,6 +15,14 @@ function DataView(props: Props) {
   const [ input, setInput ] = useState('')
 
   const latestMessage = messages.length > 0 ? messages[messages.length - 1] : ''
+  
+  let isJson = true
+  let latestMessageJson = {}
+  try {
+    latestMessageJson = JSON.parse(latestMessage)
+  } catch {
+    isJson = false
+  }
 
   function handleInputChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
     setInput(e.target.value)
@@ -35,20 +44,32 @@ function DataView(props: Props) {
           value={input}
           onChange={handleInputChange}
         />
-        <button
-          className="send"
-          disabled={socketState !== WebSocket.OPEN}
-          onClick={handleSendClick}
-        >Send</button>
+        <div className="send-container">
+          <button
+            className="send"
+            disabled={socketState !== WebSocket.OPEN}
+            onClick={handleSendClick}
+          >Send</button>
+        </div>
       </div>
 
       <div className="textarea-container">
-        <textarea
-          className="textarea"
-          placeholder="Incoming data will appear here..."
-          value={latestMessage}
-          readOnly
-        />
+        { isJson ?
+            <ReactJson
+              src={latestMessageJson}
+              theme="summerfruit"
+              name={null}
+              indentWidth={2}
+              displayDataTypes={false}
+            />
+          :
+            <textarea
+              className="textarea"
+              placeholder="Incoming data will appear here..."
+              value={latestMessage}
+              readOnly
+            />
+        }
       </div>
     </div>
   )
