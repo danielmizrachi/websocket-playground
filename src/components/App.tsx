@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 
-import '../styles/App.css'
 import ServerUrl from './ServerUrl'
 import DataView from './DataView'
+import '../styles/App.css'
 
 function App() {
   const [ socket, setSocket ] = useState<null | WebSocket>(null)
