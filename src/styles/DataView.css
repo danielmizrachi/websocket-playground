@@ -15,3 +15,7 @@
   margin: 10px 0;
   text-align: center;
 }
+.react-json-view {
+  height: 100%;
+  padding: 8px;
+}
