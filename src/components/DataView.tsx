@@ -24,12 +24,19 @@ function DataView(props: Props) {
     isJson = false
   }
 
+  function handleKeyDown(e: React.KeyboardEvent<HTMLTextAreaElement>) {
+    if (e.shiftKey && e.code === 'Enter') {
+      e.preventDefault()
+      handleSend()
+    }
+  }
+
   function handleInputChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
     setInput(e.target.value)
   }
 
-  function handleSendClick() {
-    if (input.length > 0 && socketState === WebSocket.OPEN) {
+  function handleSend() {
+    if (socketState === WebSocket.OPEN) {
       onSend(input)
       setInput('')
     }
@@ -42,13 +49,14 @@ function DataView(props: Props) {
           className="textarea"
           placeholder="Enter data to be sent..."
           value={input}
+          onKeyDown={handleKeyDown}
           onChange={handleInputChange}
         />
         <div className="send-container">
           <button
             className="send"
             disabled={socketState !== WebSocket.OPEN}
-            onClick={handleSendClick}
+            onClick={handleSend}
           >Send</button>
         </div>
       </div>
