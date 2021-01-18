@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { Container, Row, Col } from 'reactstrap'
 
 import ServerUrl from './ServerUrl'
 import DataView from './DataView'
@@ -32,31 +33,27 @@ function App() {
   }
 
   return (
-    <div className="app">
+    <Container fluid="sm">
       
-      <header>
-        <h1 className="title">WebSocket Playground</h1>
-      </header>
+      <Row>
+        <Col>
+          <h1 className="text-center font-weight-bold">WebSocket Playground</h1>
+        </Col>
+      </Row>
 
-      <main>
-        <div className="container">
-          <ServerUrl
-            socketState={socketState}
-            onConnect={handleConnect}
-            onCancelClose={handleCancelClose}
-          />
-        </div>
+      <ServerUrl
+        socketState={socketState}
+        onConnect={handleConnect}
+        onCancelClose={handleCancelClose}
+      />
 
-        <div className="container">
-          <DataView
-            socketState={socketState}
-            messages={messages}
-            onSend={handleSend}
-          />
-        </div>
-      </main>
+      <DataView
+        socketState={socketState}
+        messages={messages}
+        onSend={handleSend}
+      />
 
-    </div>
+    </Container>
   )
 }
 
