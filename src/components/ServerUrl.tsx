@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
-
-import '../styles/ServerUrl.css'
+import { Row, Col, Button, Input } from 'reactstrap'
 
 type Props = {
   socketState: number,
@@ -16,7 +15,7 @@ function ServerUrl(props: Props) {
 
   const canConnect = host.length > 0 && socketState === WebSocket.CLOSED
 
-  function handleProtocolChange(e: React.ChangeEvent<HTMLSelectElement>) {
+  function handleProtocolChange(e: React.ChangeEvent<HTMLInputElement>) {
     setProtocol(e.target.value)
   }
   
@@ -31,35 +30,36 @@ function ServerUrl(props: Props) {
   }
 
   return (
-    <div className="url-container">
-      <select
-        value={protocol}
-        onChange={handleProtocolChange}
-      >
-        <option value="wss">wss://</option>
-        <option value="ws">ws://</option>
-      </select>
+    <Row className="mb-4">
+      <Col>
+        <Input
+          type="select"
+          value={protocol}
+          onChange={handleProtocolChange}
+        >
+          <option value="wss">wss://</option>
+          <option value="ws">ws://</option>
+        </Input>
 
-      <input
-        className="url-input"
-        placeholder="Enter a WebSocket host..."
-        value={host}
-        onChange={handleUrlChange}
-        onKeyUp={handleUrlKeyUp}
-      />
+        <Input
+          type="text"
+          placeholder="Enter a WebSocket host..."
+          value={host}
+          onChange={handleUrlChange}
+          onKeyUp={handleUrlKeyUp}
+        />
 
-      <button
-        className="connect"
-        onClick={() => onConnect(`${protocol}://${host}`)}
-        disabled={!canConnect}
-      >{socketState === WebSocket.CONNECTING ? 'Connecting...' : 'Connect'}</button>
+        <Button
+          disabled={!canConnect}
+          onClick={() => onConnect(`${protocol}://${host}`)}
+        >{socketState === WebSocket.CONNECTING ? 'Connecting...' : 'Connect'}</Button>
 
-      <button
-        className="cancel-close"
-        onClick={() => onCancelClose()}
-        disabled={socketState === WebSocket.CLOSED}
-      >{socketState === WebSocket.OPEN ? 'Close' : 'Cancel'}</button>
-    </div>
+        <Button
+          onClick={() => onCancelClose()}
+          disabled={socketState === WebSocket.CLOSED}
+        >{socketState === WebSocket.OPEN ? 'Close' : 'Cancel'}</Button>
+      </Col>
+    </Row>
   )
 }
 

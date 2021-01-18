@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { Row, Col, Input, Button } from 'reactstrap'
 import ReactJson from 'react-json-view'
 
 import '../styles/DataView.css'
@@ -24,14 +25,14 @@ function DataView(props: Props) {
     isJson = false
   }
 
-  function handleKeyDown(e: React.KeyboardEvent<HTMLTextAreaElement>) {
+  function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
     if (e.shiftKey && e.code === 'Enter') {
       e.preventDefault()
       handleSend()
     }
   }
 
-  function handleInputChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
+  function handleInputChange(e: React.ChangeEvent<HTMLInputElement>) {
     setInput(e.target.value)
   }
 
@@ -43,25 +44,36 @@ function DataView(props: Props) {
   }
 
   return (
-    <div className="data-view-container">
-      <div className="textarea-container">
-        <textarea
-          className="textarea"
-          placeholder="Enter data to be sent..."
-          value={input}
-          onKeyDown={handleKeyDown}
-          onChange={handleInputChange}
-        />
-        <div className="send-container">
-          <button
-            className="send"
-            disabled={socketState !== WebSocket.OPEN}
-            onClick={handleSend}
-          >Send</button>
-        </div>
-      </div>
+    <Row>
+      <Col md="6">
+        <Row
+          className="mb-3"
+          noGutters
+        >
+          <Col>
+            <Input
+              type="textarea"
+              placeholder="Enter data to be sent..."
+              value={input}
+              rows="20"
+              onKeyDown={handleKeyDown}
+              onChange={handleInputChange}
+            />
+          </Col>
+        </Row>
+        <Row noGutters>
+          <Col className="d-flex justify-content-center">
+            <Button
+              color="primary"
+              size="md"
+              disabled={socketState !== WebSocket.OPEN}
+              onClick={handleSend}
+            >Send</Button>
+          </Col>
+        </Row>
+      </Col>
 
-      <div className="textarea-container">
+      <Col md="6">
         { isJson ?
             <ReactJson
               src={latestMessageJson}
@@ -71,15 +83,16 @@ function DataView(props: Props) {
               displayDataTypes={false}
             />
           :
-            <textarea
-              className="textarea"
+            <Input
+              type="textarea"
               placeholder="Incoming data will appear here..."
               value={latestMessage}
+              rows="20"
               readOnly
             />
         }
-      </div>
-    </div>
+      </Col>
+    </Row>
   )
 }
 

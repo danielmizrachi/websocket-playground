@@ -37,7 +37,7 @@ function App() {
       
       <Row>
         <Col>
-          <h1 className="text-center font-weight-bold">WebSocket Playground</h1>
+          <h1 className="text-center font-weight-bold mt-3 mb-4">WebSocket Playground</h1>
         </Col>
       </Row>
 
