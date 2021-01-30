@@ -8,25 +8,27 @@ import {
   InputGroupButtonDropdown,
   DropdownToggle,
   DropdownMenu,
-  DropdownItem
+  DropdownItem,
+  DropdownItemProps
 } from 'reactstrap'
 
-type Props = {
+type ServerUrlProps = {
   socketState: number,
   onConnect: (url: string) => void
   onCancelClose: () => void
 }
 
-function ServerUrl(props: Props) {
+function ServerUrl(props: ServerUrlProps) {
   const { socketState, onConnect, onCancelClose } = props
 
   const [ protocol, setProtocol ] = useState('wss')
   const [ host, setHost ] = useState('echo.websocket.org')
+  const [ isDropdownOpen, setIsDropdownOpen ] = useState(false)
 
   const canConnect = host.length > 0 && socketState === WebSocket.CLOSED
 
-  function handleProtocolChange(e: React.ChangeEvent<HTMLInputElement>) {
-    setProtocol(e.target.value)
+  function toggleDropdown() {
+    setIsDropdownOpen(!isDropdownOpen)
   }
   
   function handleUrlChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -55,13 +57,17 @@ function ServerUrl(props: Props) {
 
           <InputGroupButtonDropdown
             addonType="prepend"
-            // isOpen={isDropdownOpen}
-            // toggle={toggleDropdown}
+            isOpen={isDropdownOpen}
+            toggle={toggleDropdown}
           >
             <DropdownToggle caret>{protocol}://</DropdownToggle>
             <DropdownMenu>
-              <DropdownItem>wss://</DropdownItem>
-              <DropdownItem>ws://</DropdownItem>
+              <DropdownItem onClick={() => setProtocol('wss')}>
+                wss://
+              </DropdownItem>
+              <DropdownItem onClick={() => setProtocol('ws')}>
+                ws://
+              </DropdownItem>
             </DropdownMenu>
           </InputGroupButtonDropdown>
 
