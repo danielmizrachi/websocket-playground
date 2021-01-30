@@ -64,7 +64,7 @@ function DataView(props: Props) {
         <Row noGutters>
           <Col className="d-flex justify-content-center">
             <Button
-              color="primary"
+              color="info"
               size="md"
               disabled={socketState !== WebSocket.OPEN}
               onClick={handleSend}

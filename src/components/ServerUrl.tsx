@@ -5,11 +5,11 @@ import {
   Button,
   Input,
   InputGroup,
+  InputGroupAddon,
   InputGroupButtonDropdown,
   DropdownToggle,
   DropdownMenu,
-  DropdownItem,
-  DropdownItemProps
+  DropdownItem
 } from 'reactstrap'
 
 type ServerUrlProps = {
@@ -45,22 +45,16 @@ function ServerUrl(props: ServerUrlProps) {
     <Row className="mb-4">
       <Col>
         <InputGroup>
-        
-          {/* <Input
-            type="select"
-            value={protocol}
-            onChange={handleProtocolChange}
-          >
-            <option value="wss">wss://</option>
-            <option value="ws">ws://</option>
-          </Input> */}
 
           <InputGroupButtonDropdown
             addonType="prepend"
             isOpen={isDropdownOpen}
             toggle={toggleDropdown}
           >
-            <DropdownToggle caret>{protocol}://</DropdownToggle>
+            <DropdownToggle
+              color="info"
+              caret
+            >{protocol}://</DropdownToggle>
             <DropdownMenu>
               <DropdownItem onClick={() => setProtocol('wss')}>
                 wss://
@@ -79,15 +73,22 @@ function ServerUrl(props: ServerUrlProps) {
             onKeyUp={handleUrlKeyUp}
           />
 
-          <Button
-            disabled={!canConnect}
-            onClick={() => onConnect(`${protocol}://${host}`)}
-          >{socketState === WebSocket.CONNECTING ? 'Connecting...' : 'Connect'}</Button>
+          <InputGroupAddon addonType="append">
 
-          <Button
-            onClick={() => onCancelClose()}
-            disabled={socketState === WebSocket.CLOSED}
-          >{socketState === WebSocket.OPEN ? 'Close' : 'Cancel'}</Button>
+            <Button
+              color="info"
+              disabled={!canConnect}
+              onClick={() => onConnect(`${protocol}://${host}`)}
+            >{socketState === WebSocket.CONNECTING ? 'Connecting...' : 'Connect'}</Button>
+
+            <Button
+              color="danger"
+              disabled={socketState === WebSocket.CLOSED}
+              onClick={() => onCancelClose()}
+            >{socketState === WebSocket.OPEN ? 'Close' : 'Cancel'}</Button>
+            
+          </InputGroupAddon>
+
         </InputGroup>
       </Col>
     </Row>
