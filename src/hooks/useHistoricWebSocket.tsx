@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react'
-import { HistoricWebSocketContextValue } from '../context/HistoricWebSocketContext'
+import { HistoricWebSocket } from '../context/HistoricWebSocketContext'
 
 /**
  * Creates and manages a WebSocket which logs its send/receive history to two string arrays
  * @param url WebSocket URL to connect to
  */
-function useHistoricWebSocket(url: string | null): HistoricWebSocketContextValue {
+function useHistoricWebSocket(url: string | null): HistoricWebSocket {
   const [ webSocket, setWebSocket ] = useState<WebSocket | null>(null)
   const [ sentHistory, setSentHistory ] = useState<string[]>([])
   const [ receivedHistory, setReceivedHistory ] = useState<string[]>([])

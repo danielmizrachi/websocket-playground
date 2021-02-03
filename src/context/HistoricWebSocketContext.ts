@@ -1,13 +1,13 @@
 import { createContext } from 'react'
 
-export interface HistoricWebSocketContextValue {
+export interface HistoricWebSocket {
   webSocket: WebSocket | null,
   sentHistory: string[],
   receivedHistory: string[],
   sendMessage: (msg: string) => void
 }
 
-export const HistoricWebSocketContext = createContext<HistoricWebSocketContextValue>({
+export const HistoricWebSocketContext = createContext<HistoricWebSocket>({
   webSocket: null,
   sentHistory: [],
   receivedHistory: [],

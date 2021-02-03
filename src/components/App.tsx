@@ -1,36 +1,16 @@
 import React, { useState } from 'react'
 import { Container, Row, Col } from 'reactstrap'
 
+import useHistoricWebSocket from '../hooks/useHistoricWebSocket'
+import { HistoricWebSocketContext } from '../context/HistoricWebSocketContext'
 import ServerUrl from './ServerUrl'
 import DataView from './DataView'
 import '../styles/App.css'
 
 function App() {
-  const [ socket, setSocket ] = useState<null | WebSocket>(null)
-  const [ socketState, setSocketState ] = useState<number>(WebSocket.CLOSED)
-  const [ messages, setMessages ] = useState<string[]>([])
+  const [ url, setUrl ] = useState<string | null>(null)
 
-  function handleConnect(url: string) {
-    const newSocket = new WebSocket(url)
-    newSocket.onopen = () => setSocketState(WebSocket.OPEN)
-    newSocket.onclose = () => setSocketState(WebSocket.CLOSED)
-    newSocket.onmessage = newMessage => setMessages(messages => {
-      const msg = String(newMessage.data)
-      return messages.concat([msg])
-    })
-
-    setSocketState(WebSocket.CONNECTING)
-    setSocket(newSocket)
-  }
-
-  function handleCancelClose() {
-    socket?.close()
-    setSocket(null)
-  }
-
-  function handleSend(input: string) {
-    socket?.send(input)
-  }
+  const historicWebSocket = useHistoricWebSocket(url)
 
   return (
     <Container fluid="sm">
@@ -41,17 +21,16 @@ function App() {
         </Col>
       </Row>
 
-      <ServerUrl
-        socketState={socketState}
-        onConnect={handleConnect}
-        onCancelClose={handleCancelClose}
-      />
+      <HistoricWebSocketContext.Provider value={historicWebSocket}>
 
-      <DataView
-        socketState={socketState}
-        messages={messages}
-        onSend={handleSend}
-      />
+        <ServerUrl
+          onConnect={url => setUrl(url)}
+          onClose={() => setUrl(null)}
+        />
+
+        <DataView />
+
+      </HistoricWebSocketContext.Provider>
 
     </Container>
   )
