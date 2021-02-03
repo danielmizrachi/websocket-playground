@@ -1,33 +1,27 @@
-import { createContext, useEffect, useState } from 'react'
-
-interface HistoricWebSocketContext {
-  webSocket: WebSocket | null,
-  sentHistory: string[],
-  receivedHistory: string[],
-  sendMessage: (msg: string) => void
-}
+import { useEffect, useState } from 'react'
+import { HistoricWebSocketContextValue } from '../context/HistoricWebSocketContext'
 
 /**
- * Creates a React context for a WebSocket which logs its send/receive history to two string arrays
+ * Creates and manages a WebSocket which logs its send/receive history to two string arrays
  * @param url WebSocket URL to connect to
  */
-function useHistoricWebSocket(url: string | undefined) {
+function useHistoricWebSocket(url: string | null): HistoricWebSocketContextValue {
   const [ webSocket, setWebSocket ] = useState<WebSocket | null>(null)
   const [ sentHistory, setSentHistory ] = useState<string[]>([])
   const [ receivedHistory, setReceivedHistory ] = useState<string[]>([])
 
   useEffect(() => {
-    if (url) {
+    if (url !== null) {
       const newWebSocket = new WebSocket(url)
 
-      newWebSocket.onmessage = msgEvent => {
+      newWebSocket.addEventListener('message', msgEvent => {
         const msg = String(msgEvent.data)
         setReceivedHistory(prevState => prevState.concat([msg]))
-      }
+      })
 
-      newWebSocket.onclose = () => {
+      newWebSocket.addEventListener('close', () => {
         setWebSocket(null)
-      }
+      })
 
       setWebSocket(newWebSocket)
     } else {
@@ -48,9 +42,7 @@ function useHistoricWebSocket(url: string | undefined) {
     }
   }
 
-  const context = createContext<HistoricWebSocketContext>({ webSocket, sentHistory, receivedHistory, sendMessage })
-
-  return context
+  return { webSocket, sentHistory, receivedHistory, sendMessage }
 }
 
 export default useHistoricWebSocket
