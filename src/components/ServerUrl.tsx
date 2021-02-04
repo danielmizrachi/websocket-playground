@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import {
   Row,
   Col,
@@ -12,19 +12,23 @@ import {
   DropdownItem
 } from 'reactstrap'
 
+import { HistoricWebSocketContext } from '../context/HistoricWebSocketContext'
+
 type ServerUrlProps = {
-  socketState: number,
-  onConnect: (url: string) => void
-  onCancelClose: () => void
+  onConnect: (url: string) => void,
+  onClose: () => void
 }
 
 function ServerUrl(props: ServerUrlProps) {
-  const { socketState, onConnect, onCancelClose } = props
+  const { onConnect, onClose } = props
 
   const [ protocol, setProtocol ] = useState('wss')
   const [ host, setHost ] = useState('echo.websocket.org')
   const [ isDropdownOpen, setIsDropdownOpen ] = useState(false)
 
+  const historicWebSocket = useContext(HistoricWebSocketContext)
+
+  const socketState = historicWebSocket.webSocket?.readyState
   const canConnect = host.length > 0 && socketState === WebSocket.CLOSED
 
   function toggleDropdown() {
@@ -34,6 +38,7 @@ function ServerUrl(props: ServerUrlProps) {
   function handleUrlChange(e: React.ChangeEvent<HTMLInputElement>) {
     setHost(e.target.value)
   }
+
   function handleUrlKeyUp(e: React.KeyboardEvent<HTMLInputElement>) {
     if (e.key === 'Enter' && canConnect) {
       e.preventDefault()
@@ -84,7 +89,7 @@ function ServerUrl(props: ServerUrlProps) {
             <Button
               color="danger"
               disabled={socketState === WebSocket.CLOSED}
-              onClick={() => onCancelClose()}
+              onClick={() => onClose()}
             >{socketState === WebSocket.OPEN ? 'Close' : 'Cancel'}</Button>
             
           </InputGroupAddon>
