@@ -16,7 +16,7 @@ function useHistoricWebSocket(url: string | null): HistoricWebSocket {
 
       newWebSocket.addEventListener('message', msgEvent => {
         const msg = String(msgEvent.data)
-        setReceivedHistory(prevState => prevState.concat([msg]))
+        setReceivedHistory(prevState => [msg].concat(prevState))
       })
 
       newWebSocket.addEventListener('close', () => {
@@ -38,7 +38,7 @@ function useHistoricWebSocket(url: string | null): HistoricWebSocket {
   const sendMessage = (msg: string) => {
     if (webSocket) {
       webSocket.send(msg)
-      setSentHistory(prevState => prevState.concat([msg]))
+      setSentHistory(prevState => [msg].concat(prevState))
     }
   }
 

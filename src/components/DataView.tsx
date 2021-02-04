@@ -1,21 +1,16 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { Row, Col, Input, Button } from 'reactstrap'
 import ReactJson from 'react-json-view'
 
+import { HistoricWebSocketContext } from '../context/HistoricWebSocketContext'
 import '../styles/DataView.css'
 
-type Props = {
-  socketState: number,
-  messages: string[],
-  onSend: (input: string) => void
-}
-
-function DataView(props: Props) {
-  const { socketState, messages, onSend } = props
-
+function DataView() {
   const [ input, setInput ] = useState('')
 
-  const latestMessage = messages.length > 0 ? messages[messages.length - 1] : ''
+  const historicWebSocket = useContext(HistoricWebSocketContext)
+  const socketState = historicWebSocket.webSocket?.readyState
+  const latestMessage = historicWebSocket.receivedHistory[0] || ''
   
   let isJson = true
   let latestMessageJson = {}
@@ -38,7 +33,7 @@ function DataView(props: Props) {
 
   function handleSend() {
     if (socketState === WebSocket.OPEN) {
-      onSend(input)
+      historicWebSocket.sendMessage(input)
       setInput('')
     }
   }
